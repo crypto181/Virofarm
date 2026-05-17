@@ -1,0 +1,2999 @@
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0D47A1">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="VIRO Stickers">
+<title>VIRO GGG – A4 Sticker Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Offline font fallbacks — used if Google Fonts unavailable */
+  @font-face { font-family:'Bebas Neue'; src:local('Impact'),local('Arial Narrow'); font-weight:400; }
+</style>
+<script>
+/* ══════════════════════════════════════════════════════
+   OFFLINE-FIRST jsPDF LOADER
+   Strategy:
+   1. Try localStorage cache (instant, works offline)
+   2. Try network CDN (online)
+   3. Try secondary CDN fallback (online)
+   4. Show clear error if all fail
+   ══════════════════════════════════════════════════════ */
+(function() {
+  const CACHE_KEY = 'viro-jspdf-2.5.1';
+  const CDN_PRIMARY   = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+  const CDN_SECONDARY = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js';
+
+  function injectScript(code) {
+    const s = document.createElement('script');
+    s.textContent = code;
+    document.head.appendChild(s);
+  }
+
+  function loadFromNetwork(url, fallbackUrl) {
+    return fetch(url)
+      .then(r => { if (!r.ok) throw new Error('CDN failed'); return r.text(); })
+      .then(code => {
+        try { localStorage.setItem(CACHE_KEY, code); } catch(e) {}
+        injectScript(code);
+        window._jspdfReady = true;
+        console.log('[VIRO] jsPDF loaded from network & cached for offline use.');
+      })
+      .catch(() => {
+        if (fallbackUrl) {
+          console.warn('[VIRO] Primary CDN failed, trying fallback…');
+          return loadFromNetwork(fallbackUrl, null);
+        }
+        window._jspdfLoadError = true;
+        console.error('[VIRO] jsPDF could not be loaded. PDF export will be unavailable offline.');
+      });
+  }
+
+  // Try cache first
+  try {
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (cached && cached.length > 10000) {
+      injectScript(cached);
+      window._jspdfReady = true;
+      console.log('[VIRO] jsPDF loaded from offline cache ✓');
+      return;
+    }
+  } catch(e) {}
+
+  // Cache miss — load from network
+  loadFromNetwork(CDN_PRIMARY, CDN_SECONDARY);
+})();
+</script>
+<style>
+
+@page { size: A4 portrait; margin: 0mm; }
+
+* {
+  margin: 0; padding: 0; box-sizing: border-box;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+  color-adjust: exact !important;
+}
+
+body {
+  width: 21cm;
+  background: #f0f0f0;
+  font-family: 'Oswald', sans-serif;
+}
+
+@media screen {
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 20px 210px;
+    gap: 20px;
+    background: #111;
+    width: 100%;
+  }
+}
+
+.a4-page {
+  width: 21cm;
+  height: 29.7cm;
+  background: white;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+  break-after: page;
+  flex-shrink: 0;
+}
+@media screen { .a4-page { box-shadow: 0 8px 40px rgba(0,0,0,0.7); } }
+@media print  { .a4-page { box-shadow: none; } }
+
+.page-header {
+  background: #1565C0;
+  color: #FFD700;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.65cm;
+  letter-spacing: 0.12cm;
+  text-align: center;
+  padding: 0.16cm 0;
+  border-bottom: 0.07cm solid #FFD700;
+}
+.page-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.38cm;
+  color: #aaa;
+  text-align: center;
+  padding: 0.1cm 0;
+  letter-spacing: 0.06cm;
+  text-transform: uppercase;
+}
+@media print { .page-header, .page-label { display: none !important; } }
+
+.grid-area {
+  padding: 0.38cm 0.5cm;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3cm;
+}
+.sticker-row { display: flex; gap: 0.3cm; flex-wrap: nowrap; }
+.cut-guide { border: none; border-top: 0.035cm dashed #ccc; margin: 0 0.3cm; }
+
+/* ── STICKER BASE ── */
+.sticker {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(140deg, #FFFDE7 0%, #FFFFFF 45%, #E3F2FD 100%);
+  border: 0.07cm solid #1565C0;
+  outline: 0.04cm solid #FFD700;
+  outline-offset: -0.12cm;
+  flex-shrink: 0;
+}
+/* Shine overlay */
+.sticker::before {
+  content:'';
+  position:absolute;
+  top:0; left:0; right:0; bottom:0;
+  background: linear-gradient(120deg, rgba(255,255,255,0.55) 0%, transparent 55%);
+  pointer-events:none;
+  z-index:5;
+}
+/* Corner accents */
+.corner-tl, .corner-br {
+  position:absolute; width:0.22cm; height:0.22cm;
+  border-color:#FFD700; border-style:solid; z-index:10; opacity:0.9;
+}
+.corner-tl { top:0.07cm; left:0.07cm; border-width:0.045cm 0 0 0.045cm; border-radius:0.04cm 0 0 0; }
+.corner-br { bottom:0.07cm; right:0.07cm; border-width:0 0.045cm 0.045cm 0; border-radius:0 0 0.04cm 0; }
+
+.s-header {
+  background: linear-gradient(90deg,#0D47A1 0%,#1565C0 40%,#0D47A1 100%);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 0.2cm;
+  flex-shrink: 0;
+  position: relative;
+  z-index:2;
+}
+.s-header-stripe {
+  position:absolute; bottom:0; left:0; right:0;
+  background: linear-gradient(90deg,#FFD700,#FF8F00,#FFD700);
+  z-index:3;
+}
+
+/* ── LOGO WRAP — always white bg, crisp circle ── */
+.logo-wrap {
+  border-radius:50%;
+  background:white;
+  border:0.05cm solid #FFD700;
+  box-shadow: 0 0 0.08cm rgba(255,215,0,0.6), 0 0.04cm 0.1cm rgba(0,0,0,0.3);
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; flex-shrink:0;
+  z-index:4; position:relative;
+}
+.logo-wrap img, .logo-wrap svg { display:block; }
+
+.brand { font-family:'Bebas Neue',sans-serif; color:#FFD700; letter-spacing:0.05cm; line-height:1; text-shadow:0 0.02cm 0.06cm rgba(0,0,0,0.5); }
+.fresh-badge { color:#FFD700; font-family:'Oswald',sans-serif; font-weight:700; text-align:right; line-height:1.1; text-shadow:0 0.01cm 0.04cm rgba(0,0,0,0.4); }
+
+.s-body { flex:1; display:flex; align-items:center; gap:0.18cm; position:relative; z-index:2; }
+.eggs-col { display:flex; flex-direction:column; gap:0.08cm; align-items:center; flex-shrink:0; }
+.egg-r { display:flex; gap:0.07cm; }
+.egg {
+  display:inline-block;
+  background: radial-gradient(ellipse at 30% 25%, #fffef0, #FFE033 50%, #FF8C00 100%);
+  border: 0.03cm solid #CC6A00;
+  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
+  box-shadow: 0 0.04cm 0.1cm rgba(200,70,0,0.35), inset 0 0.03cm 0.05cm rgba(255,255,255,0.7);
+}
+.info-col { flex:1; display:flex; flex-direction:column; justify-content:center; }
+.tagline { font-family:'Oswald',sans-serif; font-weight:600; color:#E65100; text-transform:uppercase; letter-spacing:0.03cm; line-height:1; }
+.ggg { font-family:'Bebas Neue',sans-serif; color:#1565C0; letter-spacing:0.1cm; line-height:1; }
+.dist { font-family:'Oswald',sans-serif; font-weight:700; color:#C62828; text-transform:uppercase; letter-spacing:0.03cm; line-height:1; }
+.dates-row { display:flex; gap:0.1cm; }
+.dbox {
+  flex:1;
+  background: linear-gradient(135deg,#E3F2FD 0%,#BBDEFB 100%);
+  border:0.04cm solid #1565C0;
+  border-radius:0.1cm;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  box-shadow: inset 0 0.02cm 0.05cm rgba(255,255,255,0.6);
+}
+.dbox-label { font-family:'Oswald',sans-serif; font-weight:700; color:#0D47A1; text-transform:uppercase; letter-spacing:0.02cm; line-height:1.2; text-align:center; }
+.dbox-val { font-family:'Oswald',sans-serif; font-weight:700; color:#0D47A1; margin-top:0.03cm; letter-spacing:0.01cm; }
+.dbox-line { background:linear-gradient(90deg,#1565C0,#42A5F5,#1565C0); border-radius:0.05cm; width:85%; }
+.s-footer {
+  background:linear-gradient(90deg,#B71C1C 0%,#C62828 50%,#B71C1C 100%);
+  display:flex; align-items:center; justify-content:center; gap:0.08cm;
+  flex-shrink:0; position:relative; z-index:2;
+  box-shadow: 0 -0.02cm 0.06cm rgba(0,0,0,0.2);
+}
+.contact { font-family:'Oswald',sans-serif; font-weight:700; color:#FFD700; letter-spacing:0.04cm; text-shadow:0 0.01cm 0.04cm rgba(0,0,0,0.4); }
+
+/* ── FRESHNESS BADGE (lg & md only) ── */
+.fresh-seal {
+  position:absolute;
+  bottom:0.3cm; right:0.3cm;
+  border-radius:50%;
+  background: radial-gradient(circle, #FFD700 0%, #FF8F00 100%);
+  border:0.04cm solid white;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  box-shadow: 0 0.04cm 0.1cm rgba(0,0,0,0.25);
+  z-index:6;
+  line-height:1.1;
+}
+.fresh-seal span { font-family:'Bebas Neue',sans-serif; color:#0D47A1; text-align:center; }
+
+/* ── SIZE LG 15×10cm ── */
+.sticker-lg { width:15cm; height:10cm; border-radius:0.32cm; }
+.sticker-lg .s-header { height:1.65cm; padding:0 0.38cm; }
+.sticker-lg .s-header-stripe { height:0.17cm; bottom:-0.17cm; }
+.sticker-lg .logo-wrap { width:1.35cm; height:1.35cm; }
+.sticker-lg .logo-wrap svg { width:1.15cm; height:1.15cm; }
+.sticker-lg .brand { font-size:1.45cm; }
+.sticker-lg .fresh-badge { font-size:0.52cm; }
+.sticker-lg .s-body { padding:0.45cm 0.42cm 0.25cm; gap:0.35cm; margin-top:0.2cm; }
+.sticker-lg .tagline { font-size:0.44cm; margin-bottom:0.07cm; }
+.sticker-lg .ggg { font-size:1.9cm; }
+.sticker-lg .dist { font-size:0.47cm; margin-top:0.04cm; }
+.sticker-lg .dates-row { margin-top:0.22cm; gap:0.18cm; }
+.sticker-lg .dbox { padding:0.12cm 0.2cm; border-radius:0.14cm; }
+.sticker-lg .dbox-label { font-size:0.4cm; }
+.sticker-lg .dbox-val { font-size:0.43cm; min-height:0.43cm; }
+.sticker-lg .dbox-line { height:0.035cm; margin-top:0.07cm; }
+.sticker-lg .s-footer { height:1.25cm; }
+.sticker-lg .contact { font-size:0.7cm; }
+.sticker-lg .egg-r-big .egg { width:0.65cm; height:0.82cm; }
+.sticker-lg .egg-r-sm  .egg { width:0.44cm; height:0.55cm; }
+.sticker-lg .fresh-seal { width:1.9cm; height:1.9cm; }
+.sticker-lg .fresh-seal span { font-size:0.45cm; }
+.sticker-lg .corner-tl, .sticker-lg .corner-br { width:0.28cm; height:0.28cm; border-width:0.06cm; }
+
+/* ── SIZE MD 10×6cm ── */
+.sticker-md { width:10cm; height:6cm; border-radius:0.2cm; }
+.sticker-md .s-header { height:1.08cm; padding:0 0.22cm; }
+.sticker-md .s-header-stripe { height:0.11cm; bottom:-0.11cm; }
+.sticker-md .logo-wrap { width:0.88cm; height:0.88cm; }
+.sticker-md .logo-wrap svg { width:0.74cm; height:0.74cm; }
+.sticker-md .brand { font-size:1.05cm; }
+.sticker-md .fresh-badge { font-size:0.32cm; }
+.sticker-md .s-body { padding:0.28cm 0.28cm 0.18cm; gap:0.22cm; margin-top:0.14cm; }
+.sticker-md .tagline { font-size:0.29cm; margin-bottom:0.04cm; }
+.sticker-md .ggg { font-size:1.35cm; }
+.sticker-md .dist { font-size:0.3cm; margin-top:0.03cm; }
+.sticker-md .dates-row { margin-top:0.13cm; gap:0.1cm; }
+.sticker-md .dbox { padding:0.07cm 0.12cm; border-radius:0.08cm; }
+.sticker-md .dbox-label { font-size:0.25cm; }
+.sticker-md .dbox-val { font-size:0.27cm; min-height:0.27cm; }
+.sticker-md .dbox-line { height:0.022cm; margin-top:0.04cm; }
+.sticker-md .s-footer { height:0.85cm; }
+.sticker-md .contact { font-size:0.45cm; }
+.sticker-md .egg-r-big .egg { width:0.42cm; height:0.53cm; }
+.sticker-md .egg-r-sm  .egg { width:0.28cm; height:0.35cm; }
+.sticker-md .fresh-seal { width:1.4cm; height:1.4cm; bottom:0.22cm; right:0.22cm; }
+.sticker-md .fresh-seal span { font-size:0.3cm; }
+.sticker-md .corner-tl, .sticker-md .corner-br { width:0.22cm; height:0.22cm; border-width:0.045cm; }
+
+/* ── SIZE SM 6×4cm ── */
+.sticker-sm { width:6cm; height:4cm; border-radius:0.12cm; }
+.sticker-sm .s-header { height:0.72cm; padding:0 0.13cm; }
+.sticker-sm .s-header-stripe { height:0.07cm; bottom:-0.07cm; }
+.sticker-sm .logo-wrap { width:0.56cm; height:0.56cm; }
+.sticker-sm .logo-wrap svg { width:0.48cm; height:0.48cm; }
+.sticker-sm .brand { font-size:0.65cm; }
+.sticker-sm .fresh-badge { font-size:0.19cm; }
+.sticker-sm .s-body { padding:0.16cm 0.16cm 0.1cm; gap:0.12cm; margin-top:0.09cm; }
+.sticker-sm .tagline { font-size:0.16cm; margin-bottom:0.02cm; }
+.sticker-sm .ggg { font-size:0.85cm; }
+.sticker-sm .dist { font-size:0.19cm; margin-top:0.02cm; }
+.sticker-sm .dates-row { margin-top:0.08cm; gap:0.06cm; }
+.sticker-sm .dbox { padding:0.04cm 0.07cm; border-radius:0.05cm; }
+.sticker-sm .dbox-label { font-size:0.15cm; }
+.sticker-sm .dbox-val { font-size:0.15cm; min-height:0.15cm; }
+.sticker-sm .dbox-line { height:0.014cm; margin-top:0.025cm; }
+.sticker-sm .s-footer { height:0.56cm; }
+.sticker-sm .contact { font-size:0.28cm; }
+.sticker-sm .egg-r-big .egg { width:0.26cm; height:0.33cm; }
+.sticker-sm .egg-r-sm  .egg { width:0.18cm; height:0.22cm; }
+.sticker-sm .corner-tl, .sticker-sm .corner-br { width:0.14cm; height:0.14cm; border-width:0.03cm; }
+
+/* ══════════════ EDIT PANEL ══════════════ */
+#edit-panel {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(160deg,#0a1628 0%,#0D47A1 60%,#1565C0 100%);
+  border-top: 3px solid #FFD700;
+  padding: 10px 16px 14px;
+  z-index: 9999;
+  font-family: 'Oswald', sans-serif;
+  box-shadow: 0 -4px 30px rgba(0,0,0,0.6);
+  max-height: 210px;
+  overflow-y: auto;
+}
+@media print { #edit-panel { display:none !important; } }
+
+.panel-title {
+  color: #FFD700;
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  text-align: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+}
+
+.panel-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.field-group { display:flex; flex-direction:column; gap:3px; }
+.field-group label {
+  color: #90CAF9;
+  font-size: 0.68rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.field-group input {
+  background: rgba(255,255,255,0.1);
+  border: 1.5px solid rgba(255,215,0,0.45);
+  border-radius: 7px;
+  color: white;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.88rem;
+  padding: 6px 10px;
+  outline: none;
+  width: 130px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.field-group input[type="date"] { color-scheme: dark; }
+.field-group input.wide { width: 170px; }
+.field-group input:focus { border-color: #FFD700; background: rgba(255,255,255,0.18); }
+.field-group input::placeholder { color: rgba(255,255,255,0.3); }
+.field-group input[readonly] {
+  background: rgba(255,215,0,0.08);
+  border-color: rgba(255,215,0,0.6);
+  color: #FFD700;
+  cursor: not-allowed;
+}
+
+/* Expiry auto-fill indicator */
+.auto-badge {
+  font-size: 0.5rem;
+  background: #FFD700;
+  color: #0D47A1;
+  border-radius: 3px;
+  padding: 1px 4px;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  align-self: flex-start;
+  margin-top: -2px;
+  display: none;
+}
+.auto-badge.show { display: inline-block; }
+
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: stretch;
+}
+
+.btn-print, .btn-save {
+  border: none;
+  border-radius: 8px;
+  padding: 9px 20px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+  white-space: nowrap;
+  text-align: center;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-print {
+  background: linear-gradient(135deg,#FFD700,#FF8F00);
+  color: #0D47A1;
+}
+.btn-save {
+  background: linear-gradient(135deg,#43A047,#1B5E20);
+  color: #fff;
+}
+.btn-pdf {
+  background: linear-gradient(135deg,#E53935,#7B1FA2);
+  color: #fff;
+}
+.btn-guide {
+  background: linear-gradient(135deg,#0288D1,#01579B);
+  color: #fff;
+}
+.btn-print:active, .btn-save:active, .btn-pdf:active, .btn-guide:active { transform:scale(0.96); box-shadow:0 2px 6px rgba(0,0,0,0.3); }
+
+/* ── HOW TO USE MODAL ── */
+#guide-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.88);
+  z-index: 99998;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+#guide-modal.show { display: flex; }
+.guide-box {
+  background: linear-gradient(160deg,#0a1628 0%,#0D47A1 80%,#1565C0 100%);
+  border: 2px solid #FFD700;
+  border-radius: 18px;
+  padding: 28px 32px 24px;
+  max-width: 560px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.8);
+  position: relative;
+  font-family: 'Oswald', sans-serif;
+}
+.guide-close {
+  position: absolute;
+  top: 14px; right: 18px;
+  background: none;
+  border: none;
+  color: #FFD700;
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+}
+.guide-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+  color: #FFD700;
+  letter-spacing: 3px;
+  margin-bottom: 4px;
+  text-align: center;
+}
+.guide-subtitle {
+  color: #90CAF9;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+.guide-divider {
+  border: none;
+  border-top: 1px solid rgba(255,215,0,0.25);
+  margin: 16px 0;
+}
+.guide-step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+.guide-num {
+  background: linear-gradient(135deg,#FFD700,#FF8F00);
+  color: #0D47A1;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(255,215,0,0.3);
+}
+.guide-step-text h4 {
+  color: #FFD700;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+.guide-step-text p {
+  color: #BBDEFB;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 400;
+}
+.guide-tip {
+  background: rgba(255,215,0,0.08);
+  border: 1px solid rgba(255,215,0,0.3);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-top: 18px;
+}
+.guide-tip-title {
+  color: #FFD700;
+  font-size: 0.8rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.guide-tip ul {
+  list-style: none;
+  padding: 0; margin: 0;
+}
+.guide-tip ul li {
+  color: #BBDEFB;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  padding-left: 14px;
+  position: relative;
+}
+.guide-tip ul li::before {
+  content: '✦';
+  position: absolute;
+  left: 0;
+  color: #FFD700;
+  font-size: 0.6rem;
+  top: 3px;
+}
+@media print { #guide-modal { display: none !important; } }
+
+/* ── PDF PROGRESS MODAL ── */
+#pdf-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.82);
+  z-index: 99999;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 18px;
+  font-family: 'Oswald', sans-serif;
+}
+#pdf-modal.show { display: flex; }
+.pdf-modal-box {
+  background: linear-gradient(160deg,#0a1628,#1565C0);
+  border: 2px solid #FFD700;
+  border-radius: 16px;
+  padding: 32px 40px;
+  text-align: center;
+  min-width: 280px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.7);
+}
+.pdf-modal-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  color: #FFD700;
+  letter-spacing: 3px;
+  margin-bottom: 6px;
+}
+.pdf-modal-sub {
+  color: #90CAF9;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+.pdf-progress-bar-bg {
+  width: 100%;
+  height: 10px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.pdf-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #FFD700, #FF8F00);
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+.pdf-step-label {
+  color: #fff;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  min-height: 18px;
+}
+@media print { #pdf-modal { display: none !important; } }
+
+/* ══════════════ MOBILE RESPONSIVE ══════════════ */
+@media screen and (max-width: 900px) {
+  body { padding: 12px 8px 230px; gap: 14px; }
+
+  /* Scale A4 page to fit screen */
+  .a4-page {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 21/29.7;
+    transform-origin: top left;
+  }
+  .a4-page-scaler {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  #edit-panel {
+    padding: 8px 10px 12px;
+    max-height: 240px;
+  }
+  .panel-grid { gap: 6px; }
+  .field-group input { width: 110px; font-size: 0.72rem; }
+  .field-group input.wide { width: 135px; }
+  .panel-title { font-size: 0.85rem; }
+}
+
+@media screen and (max-width: 560px) {
+  body { padding: 8px 4px 260px; }
+  #edit-panel { max-height: 270px; }
+  .field-group input { width: 95px; font-size: 0.68rem; }
+  .field-group input.wide { width: 115px; }
+  .btn-print, .btn-save { padding: 8px 14px; font-size: 0.88rem; }
+}
+
+/* Mobile A4 scaling via JS wrapper */
+.a4-outer {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+</style>
+</head>
+<body>
+
+<!-- ══ OFFLINE / ONLINE STATUS BAR — must be first in body ══ -->
+<div id="net-status-bar" style="
+  position:fixed; top:0; left:0; right:0; z-index:999999;
+  display:flex; align-items:center; gap:10px;
+  padding:8px 18px;
+  font-family:'Oswald',sans-serif;
+  transition: opacity 0.6s;
+  pointer-events:none;
+  opacity:0;
+">
+  <div id="net-status-dot" style="width:10px;height:10px;border-radius:50%;flex-shrink:0;"></div>
+  <div>
+    <div id="net-status-txt" style="font-size:0.85rem;font-weight:700;color:#fff;letter-spacing:1px;"></div>
+    <div id="net-status-sub" style="font-size:0.7rem;color:rgba(255,255,255,0.82);letter-spacing:0.5px;"></div>
+  </div>
+</div>
+
+<!-- ══ PAGE 1 — LARGE 15×10cm (×2) ══ -->
+<div class="a4-outer" style="height: 575.614px; display: block;"><div class="a4-page" id="a4-1" style="width: 793.695px; height: 1122.51px; transform: scale(0.512791); transform-origin: left top;">
+  <div class="page-header">PAGE 1 — LARGE STICKERS (15cm × 10cm) — 2 PER SHEET</div>
+  <div class="grid-area" style="gap:0.5cm; padding:0.5cm;" id="lg-grid"><div class="sticker-row"><div class="sticker sticker-lg">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.52cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      <div class="fresh-seal">
+        <span style="font-size:0.45cm;">100%<br>FRESH</span>
+       </div>
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div></div><hr class="cut-guide"><div class="sticker-row"><div class="sticker sticker-lg">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.52cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      <div class="fresh-seal">
+        <span style="font-size:0.45cm;">100%<br>FRESH</span>
+       </div>
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div></div></div>
+  <div class="page-label">✂ Cut along dashed lines &nbsp;|&nbsp; Page 1 of 3 &nbsp;|&nbsp; 15cm × 10cm</div>
+</div></div>
+
+<!-- ══ PAGE 2 — MEDIUM 10×6cm (×8) ══ -->
+<div class="a4-outer" style="height: 575.614px; display: block;"><div class="a4-page" id="a4-2" style="width: 793.695px; height: 1122.51px; transform: scale(0.512791); transform-origin: left top;">
+  <div class="page-header">PAGE 2 — MEDIUM STICKERS (10cm × 6cm) — 8 PER SHEET</div>
+  <div class="grid-area" style="gap:0.3cm; padding:0.4cm 0.5cm;" id="md-grid"><div class="sticker-row"><div class="sticker sticker-md">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.32cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      <div class="fresh-seal">
+        <span style="font-size:0.3cm;">100%<br>FRESH</span>
+       </div>
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div><div class="sticker sticker-md">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.32cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      <div class="fresh-seal">
+        <span style="font-size:0.3cm;">100%<br>FRESH</span>
+       </div>
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div></div><hr class="cut-guide"><div class="sticker-row"><div class="sticker sticker-md">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.32cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      <div class="fresh-seal">
+        <span style="font-size:0.3cm;">100%<br>FRESH</span>
+       </div>
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div><div class="sticker sticker-md">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.32cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      <div class="fresh-seal">
+        <span style="font-size:0.3cm;">100%<br>FRESH</span>
+       </div>
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div></div><hr class="cut-guide"><div class="sticker-row"><div class="sticker sticker-md">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.32cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      <div class="fresh-seal">
+        <span style="font-size:0.3cm;">100%<br>FRESH</span>
+       </div>
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div><div class="sticker sticker-md">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.32cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      <div class="fresh-seal">
+        <span style="font-size:0.3cm;">100%<br>FRESH</span>
+       </div>
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div></div><hr class="cut-guide"><div class="sticker-row"><div class="sticker sticker-md">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.32cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      <div class="fresh-seal">
+        <span style="font-size:0.3cm;">100%<br>FRESH</span>
+       </div>
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div><div class="sticker sticker-md">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.32cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      <div class="fresh-seal">
+        <span style="font-size:0.3cm;">100%<br>FRESH</span>
+       </div>
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div></div></div>
+  <div class="page-label">✂ Cut along dashed lines &nbsp;|&nbsp; Page 2 of 3 &nbsp;|&nbsp; 10cm × 6cm</div>
+</div></div>
+
+<!-- ══ PAGE 3 — SMALL 6×4cm (×18) ══ -->
+<div class="a4-outer" style="height: 575.614px; display: block;"><div class="a4-page" id="a4-3" style="width: 793.695px; height: 1122.51px; transform: scale(0.512791); transform-origin: left top;">
+  <div class="page-header">PAGE 3 — SMALL STICKERS (6cm × 4cm) — 18 PER SHEET</div>
+  <div class="grid-area" style="gap:0.26cm; padding:0.36cm 0.52cm;" id="sm-grid"><div class="sticker-row"><div class="sticker sticker-sm">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.19cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div><div class="sticker sticker-sm">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.19cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div><div class="sticker sticker-sm">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.19cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div></div><hr class="cut-guide"><div class="sticker-row"><div class="sticker sticker-sm">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.19cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div><div class="sticker sticker-sm">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.19cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div><div class="sticker sticker-sm">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.19cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div></div><hr class="cut-guide"><div class="sticker-row"><div class="sticker sticker-sm">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.19cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div><div class="sticker sticker-sm">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.19cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div><div class="sticker sticker-sm">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.19cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div></div><hr class="cut-guide"><div class="sticker-row"><div class="sticker sticker-sm">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.19cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div><div class="sticker sticker-sm">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.19cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div><div class="sticker sticker-sm">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.19cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div></div><hr class="cut-guide"><div class="sticker-row"><div class="sticker sticker-sm">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.19cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div><div class="sticker sticker-sm">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.19cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div><div class="sticker sticker-sm">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.19cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div></div><hr class="cut-guide"><div class="sticker-row"><div class="sticker sticker-sm">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.19cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div><div class="sticker sticker-sm">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.19cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div><div class="sticker sticker-sm">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"></ellipse>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"></polygon>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"></polygon>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"></polygon>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"></polygon>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"></polygon>
+    <polygon points="62,72 65,20 70,22 70,72"></polygon>
+    <polygon points="62,72 70,22 77,26 74,72"></polygon>
+    <polygon points="62,72 77,26 85,32 80,72"></polygon>
+  </g>
+</svg></div>
+      <div class="brand s-company">VIRO FARM </div>
+      <div class="fresh-badge" style="font-size:0.19cm;">FRESH<br>EGGS</div>
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big"><div class="egg"></div><div class="egg"></div></div>
+        <div class="egg-r egg-r-sm"><div class="egg"></div></div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">🥚 Premium Quality Eggs</div>
+        <div class="ggg s-short">VIRO</div>
+        <div class="dist s-role">Distributor</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">07/05/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">06/06/2026</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="s-footer"><span class="contact s-phone">📞 0728 578 254</span></div>
+  </div></div></div>
+  <div class="page-label">✂ Cut along dashed lines &nbsp;|&nbsp; Page 3 of 3 &nbsp;|&nbsp; 6cm × 4cm</div>
+</div></div>
+
+<!-- ══ EDIT PANEL ══ -->
+<div id="edit-panel">
+  <div class="panel-title">✏️ Edit &amp; Print — All stickers update instantly</div>
+  <div class="panel-grid">
+
+    <div class="field-group">
+      <label>Company Name</label>
+      <input id="f-company" type="text" value="VIRO GGG" placeholder="VIRO GGG">
+    </div>
+
+    <div class="field-group">
+      <label>Short / Badge</label>
+      <input id="f-short" type="text" value="GGG" placeholder="GGG">
+    </div>
+
+    <div class="field-group">
+      <label>Role</label>
+      <input id="f-role" type="text" value="Distributor" placeholder="Distributor">
+    </div>
+
+    <div class="field-group">
+      <label>Tagline</label>
+      <input id="f-tagline" type="text" value="🥚 Premium Quality Eggs" placeholder="Tagline" class="wide">
+    </div>
+
+    <div class="field-group">
+      <label>Phone</label>
+      <input id="f-phone" type="text" value="📞 0728 578 254" placeholder="Phone">
+    </div>
+
+    <div class="field-group">
+      <label>Production Date</label>
+      <input id="f-prod" type="date" value="">
+    </div>
+
+    <div class="field-group">
+      <label>Expiry Date <span class="auto-badge show" id="auto-badge">AUTO</span></label>
+      <input id="f-exp" type="date" value="" readonly="" title="Auto-calculated: 30 days after production date">
+    </div>
+
+    <div class="btn-group">
+      <button class="btn-pdf" onclick="exportPDF()">📄 EXPORT PDF</button>
+      <button class="btn-save" onclick="saveFile()">💾 SAVE FILE</button>
+      <button class="btn-print" onclick="window.print()">🖨️ PRINT NOW</button>
+      <button class="btn-guide" onclick="document.getElementById('guide-modal').classList.add('show')">❓ HOW TO USE</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ HOW TO USE MODAL ══ -->
+<div id="guide-modal">
+  <div class="guide-box">
+    <button class="guide-close" onclick="document.getElementById('guide-modal').classList.remove('show')">✕</button>
+    <div class="guide-title">📋 How to Use</div>
+    <div class="guide-subtitle">VIRO GGG Sticker Sheet Generator — v2.0</div>
+
+    <div class="guide-step">
+      <div class="guide-num">1</div>
+      <div class="guide-step-text">
+        <h4>Fill in Your Details</h4>
+        <p>Use the edit panel at the bottom to enter your <strong style="color:#FFD700">Company Name</strong>, <strong style="color:#FFD700">Short Badge</strong> (the large text on the sticker body), <strong style="color:#FFD700">Role</strong>, <strong style="color:#FFD700">Tagline</strong>, and <strong style="color:#FFD700">Phone Number</strong>. Every sticker across all 3 pages updates instantly as you type — no save button needed.</p>
+      </div>
+    </div>
+
+    <div class="guide-step">
+      <div class="guide-num">2</div>
+      <div class="guide-step-text">
+        <h4>Set Production Date</h4>
+        <p>Pick the <strong style="color:#FFD700">Production Date</strong> from the date picker. The <strong style="color:#FFD700">Expiry Date auto-calculates to 30 days later</strong> and fills in automatically — the gold <em>AUTO</em> badge confirms it. The Expiry Date field is locked and cannot be manually edited.</p>
+      </div>
+    </div>
+
+    <div class="guide-step">
+      <div class="guide-num">3</div>
+      <div class="guide-step-text">
+        <h4>Auto-Save — Your Data Is Always Safe</h4>
+        <p>All your form fields are <strong style="color:#FFD700">automatically saved in your browser</strong> as you type. Next time you open this file, everything is restored instantly. A green toast confirms restoration. No internet needed for this — it works entirely offline via your browser's storage.</p>
+      </div>
+    </div>
+
+    <div class="guide-step">
+      <div class="guide-num">4</div>
+      <div class="guide-step-text">
+        <h4>Preview Your Sticker Sheets</h4>
+        <p>Scroll through the 3 A4 pages on screen to preview all sizes:<br>
+        • <strong style="color:#FFD700">Page 1</strong> — 2 Large stickers (15cm × 10cm)<br>
+        • <strong style="color:#FFD700">Page 2</strong> — 8 Medium stickers (10cm × 6cm)<br>
+        • <strong style="color:#FFD700">Page 3</strong> — 18 Small stickers (6cm × 4cm)<br>
+        Dashed cut lines are shown between stickers on all pages.</p>
+      </div>
+    </div>
+
+    <div class="guide-step">
+      <div class="guide-num">5</div>
+      <div class="guide-step-text">
+        <h4>Export or Print</h4>
+        <p>Choose your output from the panel buttons:<br>
+        • <strong style="color:#E57373">📄 EXPORT PDF</strong> — Generates a bold, print-ready PDF with all 3 pages. Requires internet on first use (then works offline).<br>
+        • <strong style="color:#81C784">💾 SAVE FILE</strong> — Downloads the HTML file with all your current data embedded. Open it anytime — no internet needed.<br>
+        • <strong style="color:#FFD700">🖨️ PRINT NOW</strong> — Opens the browser print dialog directly.</p>
+      </div>
+    </div>
+
+    <div class="guide-step">
+      <div class="guide-num">6</div>
+      <div class="guide-step-text">
+        <h4>Offline & Online Mode</h4>
+        <p>This app is <strong style="color:#FFD700">offline-first</strong>. On first open (online), jsPDF is downloaded and cached in your browser. After that, <strong style="color:#FFD700">all features including PDF export work without internet</strong>. A status bar at the top shows your connection state — green flashes online, red stays visible when offline. If offline and PDF hasn't been cached yet, connect once and reload.</p>
+      </div>
+    </div>
+
+    <div class="guide-step">
+      <div class="guide-num">7</div>
+      <div class="guide-step-text">
+        <h4>Print Settings</h4>
+        <p>When printing, use these settings for best results:<br>
+        • Paper size: <strong style="color:#FFD700">A4</strong><br>
+        • Margins: <strong style="color:#FFD700">None</strong><br>
+        • Background graphics: <strong style="color:#FFD700">Enabled</strong> (so colours & gradients print)<br>
+        • Scale: <strong style="color:#FFD700">100%</strong> (do not scale to fit)<br>
+        Use a colour printer for full quality.</p>
+      </div>
+    </div>
+
+    <hr class="guide-divider">
+
+    <div class="guide-tip">
+      <div class="guide-tip-title">💡 Tips & Notes</div>
+      <ul>
+        <li>The PDF uses large, bold typography — company name, badge, phone, and dates are all clearly readable at actual sticker size.</li>
+        <li>For best print quality, use <strong style="color:#FFD700">160gsm sticker paper</strong> or glossy photo paper. Matte sticker paper also works well.</li>
+        <li>Cut along the <strong style="color:#FFD700">dashed lines</strong> after printing for clean sticker edges.</li>
+        <li>Use <em>Save File</em> to keep a backup with your data pre-filled — share it with colleagues or reuse next batch.</li>
+        <li>The PDF export includes all 3 pages in one file — ideal for sending directly to a print shop.</li>
+        <li>Your data is <strong style="color:#FFD700">auto-saved in this browser</strong> and restored on next open.
+          <button onclick="lsClear()" style="background:rgba(229,57,53,0.2);border:1px solid #E53935;color:#EF9A9A;font-family:'Oswald',sans-serif;font-size:0.72rem;padding:2px 8px;border-radius:4px;cursor:pointer;letter-spacing:0.5px;margin-left:4px;">Clear saved data</button>
+        </li>
+        <li>Fonts fall back to system fonts (Impact / Arial) if Google Fonts is unavailable offline — layout stays intact.</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ PDF PROGRESS MODAL ══ -->
+<div id="pdf-modal">
+  <div class="pdf-modal-box">
+    <div class="pdf-modal-title">📄 Generating PDF</div>
+    <div class="pdf-modal-sub">Please wait — rendering sticker sheets</div>
+    <div class="pdf-progress-bar-bg">
+      <div class="pdf-progress-bar" id="pdf-progress-bar"></div>
+    </div>
+    <div class="pdf-step-label" id="pdf-step-label">Initialising…</div>
+  </div>
+</div>
+
+<script>
+/* ── LOGO SVG (faithful to uploaded logo: oval, blue V/Z monogram, pink fan) ── */
+const LOGO = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- White oval background -->
+  <ellipse cx="50" cy="50" rx="47" ry="47" fill="white" stroke="#1565C0" stroke-width="4"/>
+
+  <!-- Blue VZ monogram -->
+  <!-- V shape left -->
+  <polygon points="12,30 20,30 38,68 30,68" fill="#1565C0"/>
+  <polygon points="38,68 46,68 28,30 20,30" fill="#1565C0"/>
+  <!-- Z-like connector and right element -->
+  <polygon points="32,52 58,52 58,60 32,60" fill="#1565C0"/>
+  <polygon points="44,30 58,30 44,68 30,68 42,44 36,44 44,30" fill="#1565C0"/>
+
+  <!-- Pink fan (right side) -->
+  <g fill="#E91E8C">
+    <!-- 4 radiating blades from pivot ~(62,72) -->
+    <polygon points="62,72 60,20 65,20 67,72"/>
+    <polygon points="62,72 65,20 70,22 70,72"/>
+    <polygon points="62,72 70,22 77,26 74,72"/>
+    <polygon points="62,72 77,26 85,32 80,72"/>
+  </g>
+</svg>`;
+
+/* ── FORMAT DATE dd/mm/yyyy from ISO yyyy-mm-dd ── */
+function fmtDate(iso) {
+  if (!iso) return '';
+  const [y, m, d] = iso.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+/* ── AUTO-CALCULATE EXPIRY: prod + 30 days ── */
+function calcExpiry(prodIso) {
+  if (!prodIso) return '';
+  const d = new Date(prodIso);
+  d.setDate(d.getDate() + 30);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+/* ── GET DATA FROM INPUTS ── */
+function getData() {
+  const prodIso = document.getElementById('f-prod').value;
+  const expIso  = document.getElementById('f-exp').value;
+  return {
+    company:  document.getElementById('f-company').value || 'VIRO GGG',
+    short:    document.getElementById('f-short').value   || 'GGG',
+    role:     document.getElementById('f-role').value    || 'Distributor',
+    tagline:  document.getElementById('f-tagline').value || '🥚 Premium Quality Eggs',
+    phone:    document.getElementById('f-phone').value   || '📞 0728 578 254',
+    prod:     fmtDate(prodIso),
+    exp:      fmtDate(expIso),
+  };
+}
+
+/* ── STICKER HTML ── */
+function stickerHTML(size, d) {
+  const freshLabel = size === 'lg'
+    ? `<div class="fresh-badge" style="font-size:0.52cm;">FRESH<br>EGGS</div>`
+    : size === 'md'
+    ? `<div class="fresh-badge" style="font-size:0.32cm;">FRESH<br>EGGS</div>`
+    : `<div class="fresh-badge" style="font-size:0.19cm;">FRESH<br>EGGS</div>`;
+
+  const freshSeal = (size === 'lg' || size === 'md')
+    ? `<div class="fresh-seal">
+        <span style="font-size:${size==='lg'?'0.45':'0.3'}cm;">100%<br>FRESH</span>
+       </div>` : '';
+
+  const bigEggs = size === 'lg' ? 3 : 2;
+  const smEggs  = size === 'sm' ? 1 : 2;
+  const bigRow  = Array(bigEggs).fill('<div class="egg"></div>').join('');
+  const smRow   = Array(smEggs).fill('<div class="egg"></div>').join('');
+
+  const prodDisplay = d.prod || '— / — / ——';
+  const expDisplay  = d.exp  || '— / — / ——';
+
+  return `<div class="sticker sticker-${size}">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="s-header">
+      <div class="logo-wrap">${LOGO}</div>
+      <div class="brand s-company">${d.company}</div>
+      ${freshLabel}
+      <div class="s-header-stripe"></div>
+    </div>
+    <div class="s-body">
+      <div class="eggs-col">
+        <div class="egg-r egg-r-big">${bigRow}</div>
+        <div class="egg-r egg-r-sm">${smRow}</div>
+      </div>
+      <div class="info-col">
+        <div class="tagline s-tagline">${d.tagline}</div>
+        <div class="ggg s-short">${d.short}</div>
+        <div class="dist s-role">${d.role}</div>
+        <div class="dates-row">
+          <div class="dbox">
+            <div class="dbox-label">Prod.<br>Date</div>
+            <div class="dbox-val s-prod">${prodDisplay}</div>
+            <div class="dbox-line"></div>
+          </div>
+          <div class="dbox">
+            <div class="dbox-label">Exp.<br>Date</div>
+            <div class="dbox-val s-exp">${expDisplay}</div>
+            <div class="dbox-line"></div>
+          </div>
+        </div>
+      </div>
+      ${freshSeal}
+    </div>
+    <div class="s-footer"><span class="contact s-phone">${d.phone}</span></div>
+  </div>`;
+}
+
+/* ── BUILD ALL GRIDS ── */
+function buildAll(d) {
+  // LG: 2 rows of 1
+  const lg = document.getElementById('lg-grid');
+  lg.innerHTML = '';
+  for (let i = 0; i < 2; i++) {
+    const row = document.createElement('div');
+    row.className = 'sticker-row';
+    row.innerHTML = stickerHTML('lg', d);
+    lg.appendChild(row);
+    if (i < 1) { const hr = document.createElement('hr'); hr.className = 'cut-guide'; lg.appendChild(hr); }
+  }
+  // MD: 4 rows of 2
+  const md = document.getElementById('md-grid');
+  md.innerHTML = '';
+  for (let i = 0; i < 4; i++) {
+    const row = document.createElement('div');
+    row.className = 'sticker-row';
+    row.innerHTML = stickerHTML('md', d) + stickerHTML('md', d);
+    md.appendChild(row);
+    if (i < 3) { const hr = document.createElement('hr'); hr.className = 'cut-guide'; md.appendChild(hr); }
+  }
+  // SM: 6 rows of 3
+  const sm = document.getElementById('sm-grid');
+  sm.innerHTML = '';
+  for (let i = 0; i < 6; i++) {
+    const row = document.createElement('div');
+    row.className = 'sticker-row';
+    row.innerHTML = stickerHTML('sm', d) + stickerHTML('sm', d) + stickerHTML('sm', d);
+    sm.appendChild(row);
+    if (i < 5) { const hr = document.createElement('hr'); hr.className = 'cut-guide'; sm.appendChild(hr); }
+  }
+}
+
+/* ── SAVE FILE ── */
+function saveFile() {
+  const html = document.documentElement.outerHTML;
+  const blob = new Blob([html], { type: 'text/html' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  const today = new Date().toISOString().slice(0,10);
+  a.download = `VIRO-GGG-Stickers-${today}.html`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+/* ════════════════════════════════════════════
+   EXPORT PDF — pure jsPDF vector drawing
+   No html2canvas, no iframes, works on Android
+   ════════════════════════════════════════════ */
+function exportPDF_core() {
+  if (!window.jspdf) { alert('PDF library still loading — try again in a moment.'); return; }
+
+  const modal = document.getElementById('pdf-modal');
+  const bar   = document.getElementById('pdf-progress-bar');
+  const lbl   = document.getElementById('pdf-step-label');
+  const prog  = (p, t) => { bar.style.width = p + '%'; lbl.textContent = t; };
+
+  modal.classList.add('show');
+  prog(5, 'Building PDF…');
+
+  // Use setTimeout so the modal renders before heavy work
+  setTimeout(() => {
+    try {
+      const { jsPDF } = window.jspdf;
+      const d   = getData();
+      const pdf = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4', compress:true });
+
+      // ── Colour palette ──
+      const BLUE_D  = [13,  71, 161];   // #0D47A1
+      const BLUE_M  = [21, 101, 192];   // #1565C0
+      const GOLD    = [255, 215,  0];   // #FFD700
+      const AMBER   = [255, 143,  0];   // #FF8F00
+      const RED_D   = [183,  28, 28];   // #B71C1C
+      const RED_M   = [198,  40, 40];   // #C62828
+      const PINK    = [233,  30,140];   // #E91E8C
+      const WHITE   = [255, 255, 255];
+      const SKY     = [227, 242, 253];  // #E3F2FD
+      const ORG     = [255, 224,  51];  // egg yolk
+      const ORGE    = [255, 140,   0];  // egg edge
+
+      // helper: set fill from [r,g,b]
+      const F = c => pdf.setFillColor(c[0], c[1], c[2]);
+      const S = c => pdf.setDrawColor(c[0], c[1], c[2]);
+      const T = c => pdf.setTextColor(c[0], c[1], c[2]);
+
+      /* ══════════════════════════════════════════
+         draw one sticker at (x,y) mm, size w×h mm
+         All positions are % of w/h — fully relative
+         ══════════════════════════════════════════ */
+      function drawSticker(x, y, w, h, size) {
+        const pad = w * 0.015;
+        const r   = w * 0.022;
+
+        // ─── 1. White background with blue border ───
+        F(WHITE); S(BLUE_M); pdf.setLineWidth(0.4);
+        pdf.roundedRect(x, y, w, h, r, r, 'FD');
+
+        // ─── 2. Thick gold inner outline ───
+        S(GOLD); pdf.setLineWidth(0.5);
+        pdf.roundedRect(x+1.2, y+1.2, w-2.4, h-2.4, r*0.7, r*0.7, 'S');
+
+        // ─── 3. Header bar — 20% of height ───
+        const hH = h * 0.20;
+        F(BLUE_D); pdf.setLineWidth(0);
+        pdf.roundedRect(x, y, w, hH + r, r, r, 'F');
+        pdf.rect(x, y + hH*0.5, w, hH*0.5 + 0.1, 'F');
+
+        // Gold/amber stripe at bottom of header
+        F(GOLD);  pdf.rect(x,         y + hH - 1.0, w*0.6, 2.0, 'F');
+        F(AMBER); pdf.rect(x + w*0.6, y + hH - 1.0, w*0.4, 2.0, 'F');
+
+        // ─── 4. Logo circle ───
+        const lCx = x + w*0.07;
+        const lCy = y + hH*0.50;
+        const lR  = hH * 0.44;
+        F(WHITE); S(GOLD); pdf.setLineWidth(0.35);
+        pdf.circle(lCx, lCy, lR, 'FD');
+
+        // VZ monogram
+        F(BLUE_D); pdf.setLineWidth(0);
+        pdf.triangle(lCx-lR*0.70,lCy-lR*0.60, lCx-lR*0.42,lCy-lR*0.60, lCx+lR*0.02,lCy+lR*0.55,'F');
+        pdf.triangle(lCx+lR*0.02,lCy+lR*0.55, lCx+lR*0.26,lCy+lR*0.55, lCx-lR*0.20,lCy-lR*0.60,'F');
+        pdf.rect(lCx-lR*0.28, lCy-lR*0.06, lR*0.6, lR*0.2, 'F');
+        F(PINK); pdf.setLineWidth(0);
+        const pivX=lCx+lR*0.15, pivY=lCy+lR*0.58;
+        [[lCx+lR*0.05,lCy-lR*0.82,lCx+lR*0.22,lCy-lR*0.82],
+         [lCx+lR*0.22,lCy-lR*0.82,lCx+lR*0.50,lCy-lR*0.70],
+         [lCx+lR*0.50,lCy-lR*0.70,lCx+lR*0.72,lCy-lR*0.48],
+         [lCx+lR*0.72,lCy-lR*0.48,lCx+lR*0.85,lCy-lR*0.20]
+        ].forEach(([ax,ay,bx2,by])=>pdf.triangle(pivX,pivY,ax,ay,bx2,by,'F'));
+
+        // ─── 5. Company name — BIG & CENTRED in header ───
+        const bFz = h * 0.115;   // was 0.092 — much bigger
+        pdf.setFont('helvetica', 'bold'); pdf.setFontSize(bFz); T(GOLD);
+        pdf.text(d.company.toUpperCase(), x + w*0.52, lCy, { align:'center', baseline:'middle' });
+
+        // ─── 6. FRESH / EGGS — top right ───
+        const fFz = h * 0.052;   // was 0.038
+        pdf.setFont('helvetica', 'bold'); pdf.setFontSize(fFz); T(GOLD);
+        const feX = x + w - pad*1.8;
+        pdf.text('FRESH', feX, lCy - fFz*0.55, { align:'right', baseline:'middle' });
+        pdf.text('EGGS',  feX, lCy + fFz*0.85, { align:'right', baseline:'middle' });
+
+        // ─── 7. BODY ───
+        const footH = h * 0.145;
+        const bodyY = y + hH + 1.8;
+        const bodyH = h - hH - footH - 1.8;
+
+        // Eggs column: left 30%
+        const eColW = w * 0.30;
+        const eColX = x + pad * 1.2;
+        const eR    = Math.min(eColW * 0.18, bodyH * 0.22);
+        const bigN  = size === 'lg' ? 3 : 2;
+        const eSpX  = (eColW - pad) / bigN;
+        for (let e=0; e<bigN; e++) {
+          const ex = eColX + e*eSpX + eSpX*0.5;
+          const ey = bodyY + bodyH * 0.32;
+          F(ORG); S(ORGE); pdf.setLineWidth(0.15);
+          pdf.ellipse(ex, ey, eR, eR*1.3, 'FD');
+          F(WHITE); pdf.setLineWidth(0);
+          pdf.ellipse(ex-eR*0.25, ey-eR*0.35, eR*0.25, eR*0.18, 'F');
+        }
+        const sR   = eR * 0.64;
+        const smN  = size === 'sm' ? 1 : 2;
+        const sSpX = eColW / smN;
+        for (let e=0; e<smN; e++) {
+          const ex = eColX + e*sSpX + sSpX*0.5;
+          const ey = bodyY + bodyH * 0.68;
+          F(ORG); S(ORGE); pdf.setLineWidth(0.12);
+          pdf.ellipse(ex, ey, sR, sR*1.3, 'FD');
+        }
+
+        // Info column: right 66%
+        const infoX = x + eColW + pad*2.5;
+        const infoW = w - eColW - pad*3.5;
+
+        // Tagline — orange, bigger
+        const tFz = Math.max(h*0.042, 1.6);   // was 0.028
+        pdf.setFont('helvetica', 'bold'); pdf.setFontSize(tFz);
+        T([220, 88, 0]);
+        pdf.text((d.tagline || 'PREMIUM QUALITY EGGS').toUpperCase(), infoX, bodyY + bodyH*0.11);
+
+        // Short brand / GGG — LARGE & BOLD
+        const gFz = Math.min(h*0.185, infoW*0.28);   // was 0.13
+        pdf.setFont('helvetica', 'bold'); pdf.setFontSize(gFz); T(BLUE_D);
+        pdf.text(d.short.toUpperCase(), infoX, bodyY + bodyH*0.13 + gFz*0.88);
+
+        // Role / distributor label
+        const rFz = Math.max(h*0.045, 1.8);   // was 0.032
+        pdf.setFont('helvetica', 'bold'); pdf.setFontSize(rFz); T(RED_M);
+        pdf.text(d.role.toUpperCase(), infoX, bodyY + bodyH*0.13 + gFz*0.88 + rFz*1.5);
+
+        // ─── 8. Date boxes — taller, bigger text ───
+        const dbTop = bodyY + bodyH * 0.57;
+        const dbH2  = bodyH * 0.42;
+        const dbW2  = infoW * 0.46;
+        const dbGap = infoW * 0.05;
+        const dFzL  = Math.max(h*0.040, 1.6);   // label — was 0.026
+        const dFzV  = Math.max(h*0.048, 1.9);   // value  — was 0.030
+
+        [ [infoX,           'PROD.\nDATE', d.prod || '--/--/----'],
+          [infoX+dbW2+dbGap,'EXP.\nDATE',  d.exp  || '--/--/----']
+        ].forEach(([bx, lb, val]) => {
+          F(SKY); S(BLUE_M); pdf.setLineWidth(0.25);
+          pdf.roundedRect(bx, dbTop, dbW2, dbH2, 1.0, 1.0, 'FD');
+          const midX = bx + dbW2/2;
+          // label
+          pdf.setFont('helvetica', 'bold'); pdf.setFontSize(dFzL); T(BLUE_D);
+          lb.split('\n').forEach((ln, li) =>
+            pdf.text(ln, midX, dbTop + dbH2*0.24 + li*(dFzL*0.45), { align:'center' }));
+          // value
+          pdf.setFont('helvetica', 'bold'); pdf.setFontSize(dFzV); T(BLUE_D);
+          pdf.text(val, midX, dbTop + dbH2*0.76, { align:'center' });
+          // underline
+          F(BLUE_M);
+          pdf.rect(bx + dbW2*0.08, dbTop + dbH2*0.88, dbW2*0.84, 0.3, 'F');
+        });
+
+        // ─── 9. Footer bar — taller ───
+        const footY = y + h - footH;
+        F(RED_D); pdf.setLineWidth(0);
+        pdf.rect(x, footY, w, footH, 'F');
+        const pFz = Math.max(h*0.075, 3.0);   // was 0.052
+        pdf.setFont('helvetica', 'bold'); pdf.setFontSize(pFz); T(GOLD);
+        const phone = d.phone.replace(/[📞\s]/g, '') || '0728 578 254';
+        pdf.text(phone, x + w/2, footY + footH*0.60, { align:'center', baseline:'middle' });
+
+        // ─── 10. "100% FRESH" seal — bigger ───
+        if (size !== 'sm') {
+          const sR2 = Math.min(w*0.065, h*0.115);   // was 0.048 / 0.09
+          const sX  = x + w - sR2 - w*0.030;
+          const sY  = footY - sR2 - h*0.012;
+          F(GOLD); S(AMBER); pdf.setLineWidth(0.25);
+          pdf.circle(sX, sY, sR2, 'FD');
+          const sFz = sR2*0.72;   // was 0.55
+          pdf.setFont('helvetica', 'bold'); pdf.setFontSize(sFz); T(BLUE_D);
+          pdf.text('100%',  sX, sY - sR2*0.18, { align:'center', baseline:'middle' });
+          pdf.text('FRESH', sX, sY + sR2*0.48, { align:'center', baseline:'middle' });
+        }
+
+        // ─── 11. Gold corner accents ───
+        F(GOLD); pdf.setLineWidth(0);
+        const ca = w*0.022, ct = w*0.005;
+        pdf.rect(x+1.4, y+1.4, ct, ca, 'F');
+        pdf.rect(x+1.4, y+1.4, ca, ct, 'F');
+        pdf.rect(x+w-1.4-ct, y+h-1.4-ca, ct, ca, 'F');
+        pdf.rect(x+w-1.4-ca, y+h-1.4-ct, ca, ct, 'F');
+      }
+
+      /* ── PAGE 1: 2 Large stickers (15×10cm) ── */
+      prog(25, 'Page 1 — Large stickers…');
+      const lgW = 150, lgH = 100;
+      const lgMarX = (210 - lgW) / 2;
+      drawSticker(lgMarX,  15, lgW, lgH, 'lg');
+      // dashed cut line
+      pdf.setLineDashPattern([2,2], 0);
+      S([200,200,200]); pdf.setLineWidth(0.2);
+      pdf.line(lgMarX, 120, lgMarX + lgW, 120);
+      pdf.setLineDashPattern([], 0);
+      drawSticker(lgMarX, 125, lgW, lgH, 'lg');
+
+      /* ── PAGE 2: 8 Medium stickers (10×6cm) in 4×2 grid ── */
+      prog(50, 'Page 2 — Medium stickers…');
+      pdf.addPage();
+      const mdW = 100, mdH = 60;
+      const mdGapX = (210 - mdW*2) / 3;
+      const mdGapY = (297 - mdH*4 - 15) / 5;
+      for (let row = 0; row < 4; row++) {
+        for (let col = 0; col < 2; col++) {
+          const mx = mdGapX + col * (mdW + mdGapX);
+          const my = mdGapY + 8 + row * (mdH + mdGapY);
+          drawSticker(mx, my, mdW, mdH, 'md');
+        }
+        if (row < 3) {
+          const cy = mdGapY + 8 + (row+1)*mdH + row*mdGapY + mdGapY/2;
+          pdf.setLineDashPattern([2,2], 0);
+          S([200,200,200]); pdf.setLineWidth(0.2);
+          pdf.line(mdGapX, cy, 210 - mdGapX, cy);
+          pdf.setLineDashPattern([], 0);
+        }
+      }
+
+      /* ── PAGE 3: 18 Small stickers (6×4cm) in 6×3 grid ── */
+      prog(75, 'Page 3 — Small stickers…');
+      pdf.addPage();
+      const smW = 60, smH = 40;
+      const smGapX = (210 - smW*3) / 4;
+      const smGapY = (297 - smH*6 - 12) / 7;
+      for (let row = 0; row < 6; row++) {
+        for (let col = 0; col < 3; col++) {
+          const sx = smGapX + col * (smW + smGapX);
+          const sy = smGapY + 6 + row * (smH + smGapY);
+          drawSticker(sx, sy, smW, smH, 'sm');
+        }
+        if (row < 5) {
+          const cy = smGapY + 6 + (row+1)*smH + row*smGapY + smGapY/2;
+          pdf.setLineDashPattern([1.5,1.5], 0);
+          S([200,200,200]); pdf.setLineWidth(0.15);
+          pdf.line(smGapX, cy, 210 - smGapX, cy);
+          pdf.setLineDashPattern([], 0);
+        }
+      }
+
+      prog(95, 'Saving…');
+      const today = new Date().toISOString().slice(0,10);
+      pdf.save(`VIRO-GGG-Stickers-${today}.pdf`);
+
+      prog(100, '✅ PDF downloaded!');
+      setTimeout(() => modal.classList.remove('show'), 1500);
+
+    } catch(err) {
+      console.error(err);
+      document.getElementById('pdf-step-label').textContent = '❌ ' + err.message;
+      setTimeout(() => document.getElementById('pdf-modal').classList.remove('show'), 3000);
+    }
+  }, 80);
+}
+
+/* ── MOBILE SCALING ── */
+function scalePages() {
+  if (window.innerWidth >= 900) {
+    ['a4-1','a4-2','a4-3'].forEach(id => {
+      const el = document.getElementById(id);
+      el.style.transform = '';
+      el.style.width = '';
+      el.style.height = '';
+    });
+    return;
+  }
+  const availW = window.innerWidth - 16;
+  const a4W = 21 * 37.795; // 21cm in px at 96dpi
+  const scale = availW / a4W;
+  const a4H = 29.7 * 37.795;
+
+  ['a4-1','a4-2','a4-3'].forEach(id => {
+    const el = document.getElementById(id);
+    el.style.width = a4W + 'px';
+    el.style.height = a4H + 'px';
+    el.style.transform = `scale(${scale})`;
+    el.style.transformOrigin = 'top left';
+    // set outer height so it doesn't overlap
+    const outer = el.parentElement;
+    outer.style.height = (a4H * scale) + 'px';
+    outer.style.display = 'block';
+  });
+}
+
+/* ══════════════════════════════════════════
+   LOCAL STORAGE — AUTO SAVE & RESTORE
+   Key: viro-ggg-sticker-data
+   Saves: all 7 field values
+   ══════════════════════════════════════════ */
+const LS_KEY = 'viro-ggg-sticker-data';
+const SAVE_FIELDS = ['f-company','f-short','f-role','f-tagline','f-phone','f-prod','f-exp'];
+
+function lsSave() {
+  try {
+    const data = {};
+    SAVE_FIELDS.forEach(id => { data[id] = document.getElementById(id).value; });
+    localStorage.setItem(LS_KEY, JSON.stringify(data));
+  } catch(e) { /* storage unavailable — fail silently */ }
+}
+
+function lsRestore() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return false;
+    const data = JSON.parse(raw);
+    SAVE_FIELDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && data[id] !== undefined && data[id] !== '') el.value = data[id];
+    });
+    // Restore auto-badge visibility
+    if (data['f-exp']) document.getElementById('auto-badge').classList.add('show');
+    return true;
+  } catch(e) { return false; }
+}
+
+function lsClear() {
+  try {
+    localStorage.removeItem(LS_KEY);
+    showSaveToast('🗑️ Saved data cleared', '#E53935');
+  } catch(e) {}
+}
+
+/* ── TOAST NOTIFICATION ── */
+function showSaveToast(msg, color) {
+  let toast = document.getElementById('ls-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'ls-toast';
+    toast.style.cssText = `
+      position:fixed; bottom:230px; left:50%; transform:translateX(-50%);
+      background:#1B5E20; color:#fff; font-family:'Oswald',sans-serif;
+      font-size:0.82rem; letter-spacing:1px; padding:8px 20px;
+      border-radius:20px; box-shadow:0 4px 18px rgba(0,0,0,0.5);
+      z-index:99999; opacity:0; transition:opacity 0.3s;
+      white-space:nowrap; pointer-events:none;
+    `;
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.background = color || '#1B5E20';
+  toast.style.opacity = '1';
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => { toast.style.opacity = '0'; }, 2200);
+}
+
+/* ── INIT ── */
+const restored = lsRestore();
+buildAll(getData());
+scalePages();
+window.addEventListener('resize', scalePages);
+
+if (restored) showSaveToast('✅ Last session restored');
+
+/* ── PROD DATE AUTO-FILLS EXPIRY ── */
+document.getElementById('f-prod').addEventListener('input', function() {
+  const prodIso = this.value;
+  const expIso  = calcExpiry(prodIso);
+  const expInput = document.getElementById('f-exp');
+  const badge    = document.getElementById('auto-badge');
+  if (expIso) {
+    expInput.value = expIso;
+    badge.classList.add('show');
+  } else {
+    expInput.value = '';
+    badge.classList.remove('show');
+  }
+  buildAll(getData());
+  lsSave();
+});
+
+/* ── LIVE UPDATE + AUTO SAVE ON ALL OTHER INPUTS ── */
+['f-company','f-short','f-role','f-tagline','f-phone'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => {
+    buildAll(getData());
+    lsSave();
+  });
+});
+
+/* ══════════════════════════════════════════════════════
+   ONLINE / OFFLINE STATUS INDICATOR
+   ══════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', function() {
+  const bar = document.getElementById('net-status-bar');
+  const dot = document.getElementById('net-status-dot');
+  const txt = document.getElementById('net-status-txt');
+  const sub = document.getElementById('net-status-sub');
+
+  function setStatus(online) {
+    if (online) {
+      bar.style.background = 'linear-gradient(90deg,#1B5E20,#2E7D32)';
+      dot.style.background = '#69F0AE';
+      txt.textContent = '🌐 Online';
+      sub.textContent = 'All features available';
+      bar.style.opacity = '1';
+      bar.style.pointerEvents = 'none';
+      setTimeout(() => { bar.style.opacity = '0'; }, 3000);
+    } else {
+      bar.style.background = 'linear-gradient(90deg,#B71C1C,#C62828)';
+      dot.style.background = '#FF5252';
+      txt.textContent = '📴 Offline';
+      sub.textContent = window._jspdfReady
+        ? 'PDF export ready — all features available offline ✓'
+        : 'PDF export unavailable — connect once to enable offline PDF';
+      bar.style.opacity = '1';
+      bar.style.pointerEvents = 'auto';
+    }
+  }
+
+  window.addEventListener('online',  () => setStatus(true));
+  window.addEventListener('offline', () => setStatus(false));
+
+  // Show once on load if offline
+  if (!navigator.onLine) setStatus(false);
+});
+
+/* ── PDF EXPORT: handle jsPDF not ready ── */
+window.exportPDF = function() {
+  if (!window.jspdf) {
+    const msg = navigator.onLine
+      ? 'jsPDF is still loading — please wait a moment and try again.'
+      : 'PDF export is not available offline yet.\n\nPlease connect to the internet once to enable offline PDF export, then reload.';
+    alert(msg);
+    return;
+  }
+  exportPDF_core();
+};
+</script>
+
+</body></html>
